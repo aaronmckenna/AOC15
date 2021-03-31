@@ -22,12 +22,12 @@ For example:
 
 To what floor do the instructions take Santa?
 
+There's also a part two that asks for the first time Santa enters the basement.
+
 ## Naming Conventions
 Any functions or variables will be named in flat case (for example: *int numbertwo*), unless said variable is a constant, then it will be in CONSTANT_CASE (*const int 
 MAX_SIZE).
 
-## Architecture
-
-
 ## Language
-I'm using C for the reasoning that this problem seems very simple, and relies expressly on arrays and strings.
+I'm using C for the reasoning that this problem seems very simple, and relies expressly on arrays and strings. At least, that's what I would say if my original answer ended
+up actually working. C++ nor C ended up completely correct.

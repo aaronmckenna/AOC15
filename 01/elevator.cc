@@ -14,17 +14,20 @@ int main() {
 			readfile.get(c);
 			instructions.push_back(c);
 		}
+		readfile.close();
 	}
 
 	int floor = 0;
-	for (int i = 0; i < instructions.size();) {
+	for (int i = 0; i < instructions.size(); i++) {
 		if (instructions[i] == '(') {
 			floor = floor + 1;
 		}
 		else if (instructions[i] == ')') {
 			floor = floor - 1;
 		}
-		i++;
+		if (floor == -1) {
+			cout << i + 1 << endl;
+		}
 	}
 	cout << floor << endl;
 }

@@ -9,16 +9,16 @@ int main() {
 
 	int floor = 0;
 
-	for (int i = 0; i < 6999; i++) {
+	for (int i = 0; i < 7000; i++) {
 		if (buffer[i] == '(') {
-			floor++;
+			floor = floor + 1;
 		}
 		else if (buffer[i] == ')') { // the only other thing buffer can be is ) so else if isn't necessary
-			floor--;
+			floor = floor - 1;
+		}
+
+		if (floor == -1) {
+			printf("%d", i);
 		}
 	}
-	printf("%d", floor);
-	printf("\n");
-	printf("%c", buffer[6999]);
-	printf("\n");
 }
