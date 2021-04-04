@@ -1,13 +1,19 @@
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
-use std::path::Path;
-use std::convert::TryFrom;
 
 fn main() -> io::Result<()> {
+    let input = File::open("INPUT")?;
+    let present_sizes : Vec<String> = collect_sizes(input);
+
+    let sum : i32 = calc_sum(present_sizes);
+
+    println!("sum: {}", sum);
+
+    Ok(())
+}
+
+fn collect_sizes(input : File) -> Vec<String> {
     let mut present_sizes : Vec<String> = Vec::new();
-    let mut surface_areas : Vec<i32> = Vec::new();
-    let mut slacks : Vec<i32> = Vec::new();
-    let mut input = File::open("INPUT")?;
     let reader = BufReader::new(input);
 
     'lines: for line in reader.lines() {
@@ -21,34 +27,33 @@ fn main() -> io::Result<()> {
         }
     };
 
+    present_sizes
+}
+
+fn calc_slack(x : i32, y : i32, z : i32) -> i32 {
+    let slack;
+    if ((x * y) < (x * z)) && ((x * y) < (y * z)) {
+        slack = x * y;
+    } else if (x * z) < (y * z) {
+        slack = x * z;
+    } else {
+        slack = y * z;
+    }
+    slack
+}
+
+fn calc_sum(present_sizes : Vec<String>) -> i32 {
     let mut sum : i32 = 0;
-    for i in present_sizes {
-        let split = i.split('x');
+    for size in present_sizes {
+        let split = size.split('x');
         let dimensions : Vec<&str> = split.collect();
         let x : i32 = dimensions[0].parse().unwrap();
         let y : i32 = dimensions[1].parse().unwrap();
         let z : i32 = dimensions[2].parse().unwrap();
-
-        let mut slack : i32 = 0;
+        let slack : i32 = calc_slack(x, y, z);
         let surface_area : i32 = (2 * x * y) + (2 * x * z) + (2 * y * z);
 
-
-        if ((x * y) < (x * z)) && ((x * y) < (y * z)) {
-            slack = x * y;
-        } else if ((x * z) < (y * z)) {
-            slack = x * z;
-        } else {
-            slack = y * z;
-        }
-
-        surface_areas.push(surface_area);
-        slacks.push(slack);
         sum += surface_area + slack;
     }
-
-    println!("SA: {}", surface_areas[0]);
-    println!("slack: {}", slacks[0]);
-    println!("sum: {}", sum);
-
-    Ok(())
+    sum
 }
