@@ -5,9 +5,11 @@ fn main() -> io::Result<()> {
     let input = File::open("INPUT")?;
     let present_sizes : Vec<String> = collect_sizes(input);
 
-    let sum : i32 = calc_sum(present_sizes);
+    //let sum : i32 = calc_sum(present_sizes);
 
-    println!("sum: {}", sum);
+    let ribbon : i32 = get_ribbon(present_sizes);
+
+    println!("ribbon: {}", ribbon);
 
     Ok(())
 }
@@ -56,4 +58,31 @@ fn calc_sum(present_sizes : Vec<String>) -> i32 {
         sum += surface_area + slack;
     }
     sum
+}
+
+fn get_ribbon(present_sizes : Vec<String>) -> i32 {
+    let mut sum = 0;
+    for size in present_sizes {
+        let split = size.split('x');
+        let dimensions : Vec<&str> = split.collect();
+        let x : i32 = dimensions[0].parse().unwrap();
+        let y : i32 = dimensions[1].parse().unwrap();
+        let z : i32 = dimensions[2].parse().unwrap();
+        sum += calc_ribbon(x, y, z);
+    }
+    sum
+}
+
+fn calc_ribbon(x : i32, y : i32, z : i32) -> i32 {
+    let bow = x * y * z;
+    let ribbon;
+    if (x + x + y + y) < (x + x + z + z) &&
+        (x + x + y + y) < (y + y + z + z) {
+        ribbon = x + x + y + y;
+    } else if (x + x + z + z) < (y + y + z + z) {
+        ribbon = x + x + z + z;
+    } else {
+        ribbon = y + y + z + z;
+    }
+    bow + ribbon
 }
